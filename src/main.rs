@@ -1,4 +1,4 @@
-use std::env;
+use std::{env, process};
 
 fn main() {
 	let mut args = env::args();
@@ -6,24 +6,36 @@ fn main() {
 	args.next(); // ignore first arg
 
 	let red = match args.next() {
-		Some(val) => val
-			.parse::<u8>()
-			.unwrap_or_else(|err| panic!("invalid input for red value: {}", err)),
-		_ => panic!("expected red value as second argument"),
+		Some(val) => val.parse::<u8>().unwrap_or_else(|err| {
+			eprintln!("invalid input for red value: {err}");
+			process::exit(1);
+		}),
+		_ => {
+			eprintln!("expected red value as first argument");
+			process::exit(1);
+		}
 	};
 
 	let green = match args.next() {
-		Some(val) => val
-			.parse::<u8>()
-			.unwrap_or_else(|err| panic!("invalid input for green value: {}", err)),
-		_ => panic!("expected green value as second argument"),
+		Some(val) => val.parse::<u8>().unwrap_or_else(|err| {
+			eprintln!("invalid input for green value: {err}");
+			process::exit(1)
+		}),
+		_ => {
+			eprintln!("expected green value as second argument");
+			process::exit(1);
+		}
 	};
 
 	let blue = match args.next() {
-		Some(val) => val
-			.parse::<u8>()
-			.unwrap_or_else(|err| panic!("invalid input for blue value: {}", err)),
-		_ => panic!("expected blue value as second argument"),
+		Some(val) => val.parse::<u8>().unwrap_or_else(|err| {
+			eprintln!("invalid input for blue value: {err}");
+			process::exit(1);
+		}),
+		_ => {
+			eprintln!("expected blue value as third argument");
+			process::exit(1);
+		}
 	};
 
 	println!("#{:X}{:X}{:X}", red, green, blue);
