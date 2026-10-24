@@ -2,10 +2,11 @@
 
 A simple script for converting rgba or rgb to hexidecimal from the cli because I got tired of looking it up.
 
-If you install the binary from release, put in a place where you can use it like `~/.local/bin` or `/usr/local/bin/` (assuming you're using Linux).
-
-Make it executable:
+If you install the binary from release, put in a place where you can use it like `~/.local/bin` or `/usr/local/bin/` (assuming you're using Linux), then make it executable:
 `chmod +x rgba2hex`
+
+Otherwise, you can install from [crates.io]("https://crates.io") using `cargo`:
+`cargo install rgba2hex`
 
 Example usage:
 `rgba2hex 115 239 247 0.5`
