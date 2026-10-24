@@ -2,3 +2,5 @@
 name = "rgba2hex"
 version = "2.1.0"
 edition = "2024"
+license = "MIT"
+description = "A crate for converting rgb or rgba values to hex string representation."
