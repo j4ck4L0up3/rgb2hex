@@ -1,3 +1,5 @@
+//! A crate for converting rgb or rgba values to hex string representation.
+
 use std::{error::Error, fmt::Display};
 
 #[derive(PartialEq, Eq, Debug)]
@@ -21,6 +23,21 @@ impl Display for AlphaError {
 	}
 }
 
+/// Converts RGBA where the alpha is a float between 0.0 and 1.0
+///
+/// Note: the alpha value is rounded up to provide the correct value when converted to a u8.
+/// Alpha is optional, with a default value of 255 which translates to FF.
+///
+/// # Examples
+/// ```
+/// use rgba2hex;
+///
+/// let color = rgba2hex::from_alpha_float(115, 239, 247, Some(0.5)).unwrap();
+/// assert_eq!(color, "#73EFF780"); // 0.5 * 255 = 127.5 which is rounded up to 128
+///
+/// let no_alpha = rgba2hex::from_alpha_float(0, 0, 255, None).unwrap();
+/// assert_eq!(no_alpha, "#0000FFFF"); // default alpha
+/// ```
 pub fn from_alpha_float(
 	red: u8,
 	green: u8,
@@ -44,6 +61,22 @@ pub fn from_alpha_float(
 	return Ok(format!("#{:02X}{:02X}{:02X}{:02X}", red, green, blue, a));
 }
 
+/// Converts RGBA where alpha is an 8-bit integer (between 0 and 255)
+///
+/// Note: alpha is optional with a default value of 255 which translates to FF.
+///
+/// # Examples
+/// ```
+/// use rgba2hex;
+///
+/// let color = rgba2hex::from_alpha_uint(115, 239, 247, Some(128));
+/// assert_eq!(color, "#73EFF780");
+///
+/// let no_alpha = rgba2hex::from_alpha_uint(0, 0, 255, None);
+/// assert_eq!(no_alpha, "#0000FFFF"); // default alpha
+/// ```
+///
+/// No errors are thrown, but floats are not supported. For float support, see [`from_alpha_float`].
 pub fn from_alpha_uint(red: u8, green: u8, blue: u8, alpha: Option<u8>) -> String {
 	if let Some(a) = alpha {
 		return format!("#{:02X}{:02X}{:02X}{:02X}", red, green, blue, a);
