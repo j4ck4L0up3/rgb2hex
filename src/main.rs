@@ -1,3 +1,4 @@
+use rgba2hex::{from_alpha_float, from_alpha_uint, AlphaError};
 use std::{env, process};
 
 fn main() {
@@ -38,5 +39,44 @@ fn main() {
 		}
 	};
 
-	println!("#{:X}{:X}{:X}", red, green, blue);
+	let alpha = match args.next() {
+		Some(a) => a,
+		None => {
+			let hex: String = from_alpha_uint(red, green, blue, None);
+			let hex: &str = hex.as_str();
+			println!("{hex}");
+			process::exit(0);
+		}
+	};
+
+	match alpha.parse::<u8>() {
+		Ok(a) => {
+			let hex: String = from_alpha_uint(red, green, blue, Some(a));
+			let hex: &str = hex.as_str();
+			println!("{hex}");
+			process::exit(0);
+		}
+		Err(_) => {
+			let a = alpha.parse::<f32>().unwrap_or_else(|_| {
+				eprintln!(
+					"invalid alpha in fourth argument: {} or {}",
+					AlphaError::InvalidAlphaUintValue,
+					AlphaError::InvalidAlphaFloatValue
+				);
+				process::exit(1);
+			});
+
+			match from_alpha_float(red, green, blue, Some(a)) {
+				Ok(hex) => {
+					let hex: &str = hex.as_str();
+					println!("{hex}");
+					process::exit(0);
+				}
+				Err(err) => {
+					eprintln!("invalid alpha in fourth argument: {err}");
+					process::exit(1);
+				}
+			}
+		}
+	}
 }

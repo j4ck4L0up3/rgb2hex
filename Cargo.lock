@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "rgb2hex"
-version = "0.1.0"
+name = "rgba2hex"
+version = "2.1.0"
