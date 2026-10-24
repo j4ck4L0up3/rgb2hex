@@ -1,4 +1,4 @@
-# rgb2hex
+# rgba2hex
 
 A simple script for converting rgba or rgb to hexidecimal from the cli because I got tired of looking it up.
 
